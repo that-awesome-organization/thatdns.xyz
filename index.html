@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>That DNS</title>
-    <link href="/static/css/main.css?ts=1641633819" rel="stylesheet">
+    <link href="/static/css/main.css?ts=1641634820" rel="stylesheet">
     <script defer data-domain="thatdns.xyz" src="https://t.dcpri.me/js/plausible.js"></script>
-    <script src="/static/js/main.js?ts=1641633819"></script>
+    <script src="/static/js/main.js?ts=1641634820"></script>
 </head>
 
 <body>
@@ -30,8 +30,23 @@ of the IP Address it is requested from.</p>
 <p>It does look difficult from the perspective of normal website user, but if you think about it from a
 engineering perspective it is quite simple.</p>
 
+<p>The main purpose of this project is to have a Name server that sits in-between DNS and records.
+    Based on the location it will resolve A/AAAA records closest to the Client IP that requested the record.
+
+    e.g. if client is in India and the website they visit is resolving to multiple IPs around the globe
+    thatdns service will respond with only nearest ones.
+</p>
+
+<h2>How it works?</h2>
 <h3>DNS Infrastructure overview</h3>
 <img data-src="/static/images/dns-infrastructure.png" src="" onerror="loadImage(this);">
+
+<p>From the figure above we can see the DNS Providers have servers
+    distributed around the globe and to access any Domain the first
+    step is to get the NS record (not shown in the diagram) for the domain.
+</p>
+
+<img data-src="/static/images/sequence-1.png" src="" onerror="loadImage(this);">
 
     </div>
     <footer>
