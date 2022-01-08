@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>That DNS</title>
-    <link href="/static/css/main.css?ts={{ .Timestamp }}" rel="stylesheet">
+    <link href="/static/css/main.css?ts=1641663959" rel="stylesheet">
     <script defer data-domain="thatdns.xyz" src="https://t.dcpri.me/js/plausible.js"></script>
-    <script src="/static/js/main.js?ts={{ .Timestamp }}"></script>
+    <script src="/static/js/main.js?ts=1641663959"></script>
 </head>
 
 <body>
@@ -21,7 +21,22 @@
                 <li><a href="/demo.html">Demo</a></li>
             </ul>
         </nav>
-        {{ block "content" . }}{{ end }}
+        
+<h2>More details</h2>
+<h3>DNS Infrastructure overview</h3>
+<p>
+    Following shows how a hostname is resolved to an IP, and the DNS
+</p>
+<img data-src="/static/images/sequence-1.svg" src="" onerror="loadImage(this);">
+
+<img data-src="/static/images/dns-infrastructure.png" src="" onerror="loadImage(this);">
+
+<p>
+    From the figure above we can see the DNS Providers have servers
+    distributed around the globe and to access any Domain the first
+    step is to get the NS record (not shown in the diagram) for the domain.
+</p>
+
     </div>
     <footer>
         Contact: <a href="mailto:hello@thatwebsite.xyz">hello@thatwebsite.xyz</a>

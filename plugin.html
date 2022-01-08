@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>That DNS</title>
+    <link href="/static/css/main.css?ts=1641663959" rel="stylesheet">
+    <script defer data-domain="thatdns.xyz" src="https://t.dcpri.me/js/plausible.js"></script>
+    <script src="/static/js/main.js?ts=1641663959"></script>
+</head>
+
+<body>
+    <div class="content">
+        <h1 class="title">That DNS</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Project Details</a></li>
+                <li><a href="/plugin.html">GeoDNS Plugin</a></li>
+                <li><a href="/demo.html">Demo</a></li>
+            </ul>
+        </nav>
+        <h1>GeoDNS Plugin</h1>
+
+<ol>
+    <li>Working</li>
+    <li>Example</li>
+</ol>
+
+<h2 id="working">Working</h2>
+<p>
+    The plugin is actually implementing the <code>dns.ResponseWriter</code> to modify the response
+    from other plugins, like File. The plugin implementation has different approach for different queries.
+</p>
+
+<h3>Non-A and Non-AAAA Record</h3>
+<p>
+    Whenever a query contains anything other than A or AAAA it is simply ignored, to avoid any configuration
+    changes the plugin will transparently resolve records that are like CNAME, MX, etc.
+</p>
+
+<h3>Single IP A or AAAA record</h3>
+<p>
+    Similar to other records, if there's no choice in A or AAAA records they are also transparently passed along
+    to avoid latency.
+</p>
+
+<h3>Multiple IP A or AAAA records - Same Continent</h3>
+<p>
+    With current implementation the IP A-records or AAAA-records are checked for distance and continent with the client IP.
+    If the client IP has same continent as some of the records all those records are responded.
+</p>
+
+<h3>Multiple IP A or AAAA records - Distance</h3>
+<p>
+    With current implementation the IP A-records or AAAA-records are checked for distance and continent with the client IP.
+    If the client IP continent has does not match with any of the records, it will do a distance match and respond with the
+    nearest ones. Removing the outliers by filtering the mean distance.
+</p>
+
+<h3 id="example">Example</h3>
+<p>
+    Let's try to resolve the Record for <code>test1.sub.thatwebsite.xyz</code> from two different locations, AS and EU.
+</p>
+<pre>
+    <code>$ dig @ns1.thatdns.xyz +noall +answer test1.sub.thatwebsite.xyz</code>
+</pre>
+<p>Let's break the command.</p>
+<ul>
+    <li>dig is a command line DNS Lookup Utility</li>
+    <li><code>@ns1.thatdns.xyz</code> is the DNS we are querying to. 
+        <code>@</code> allows us to specify which server to query it to.</li>
+    <li><code>+noall +answer</code> just gives answer as output.</li>
+    <li><code>test1.sub.thatwebsite.xyz</code> is the record which we are trying to query.</li>
+</ul>
+
+<p>Now expected answer will be with two IPs - "172.104.160.xxx" (Singapore) and "172.105.64.xxx" (Germany).</p>
+<p>
+Following are the scenarios:
+</p>
+<ul>
+<li>Client 1 (India)</li>
+<pre><code>test1.sub.thatwebsite.xyz. 3600 IN      A       172.104.160.0</code></pre>
+<blockquote style="font-size: small; border-left: solid 2px; padding-left: 0.5rem;">Same Continent IP exists</blockquote>
+<li>Client 2 (Europe)</li>
+<pre><code>test1.sub.thatwebsite.xyz. 3600 IN      A       172.105.64.0</code></pre>
+<blockquote style="font-size: small; border-left: solid 2px; padding-left: 0.5rem;">Same Continent IP exists</blockquote>
+<li>Client 3 (Australia)</li>
+<pre><code>test1.sub.thatwebsite.xyz. 3600 IN      A       172.104.160.0</code></pre>
+<blockquote style="font-size: small; border-left: solid 2px; padding-left: 0.5rem;">Nearest IP</blockquote>
+<li>Client 4 (United States)</li>
+<pre><code>test1.sub.thatwebsite.xyz. 3600 IN      A       172.105.64.0</code></pre>
+<blockquote style="font-size: small; border-left: solid 2px; padding-left: 0.5rem;">Nearest IP</blockquote>
+</ul>
+
+    </div>
+    <footer>
+        Contact: <a href="mailto:hello@thatwebsite.xyz">hello@thatwebsite.xyz</a>
+        <p>This page uses privacy-friendly tracking using Plausible.io</p>
+    </footer>
+</body>
+
+</html>

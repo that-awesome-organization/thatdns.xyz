@@ -1,0 +1,16 @@
+{{ block "content" . }}
+<h2>More details</h2>
+<h3>DNS Infrastructure overview</h3>
+<p>
+    Following shows how a hostname is resolved to an IP, and the DNS
+</p>
+<img data-src="/static/images/sequence-1.svg" src="" onerror="loadImage(this);">
+
+<img data-src="/static/images/dns-infrastructure.png" src="" onerror="loadImage(this);">
+
+<p>
+    From the figure above we can see the DNS Providers have servers
+    distributed around the globe and to access any Domain the first
+    step is to get the NS record (not shown in the diagram) for the domain.
+</p>
+{{ end }}

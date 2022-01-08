@@ -9,18 +9,22 @@ import (
 	"sort"
 )
 
-var (
-	tmpls = []string{"index.html", "progress.html", "demo.html"}
-)
-
 func main() {
 	timestampBytes, err := os.ReadFile(".timestamp")
 	if err != nil {
 		timestampBytes = []byte{}
 	}
 	timestamp := string(timestampBytes[:len(timestampBytes)-1])
+
+	htmlFiles, err := findFiles("templates")
+	if err != nil {
+		log.Fatal(err)
+	}
 	// create html files
-	for _, tmpl := range tmpls {
+	for _, tmpl := range htmlFiles {
+		if tmpl == "_base.html" {
+			continue
+		}
 		fmt.Printf("[INFO] Processing template %-20s", tmpl)
 		t := template.Must(template.New("_base.html").ParseFiles(filepath.Join("templates", "_base.html"), filepath.Join("templates", tmpl)))
 		f, err := os.Create(tmpl)
@@ -33,36 +37,13 @@ func main() {
 		fmt.Println("[DONE]")
 	}
 
-	// check for images that are not in dark mode
-	dir, err := os.ReadDir(filepath.Join("static", "images"))
+	images, err := findFiles(filepath.Join("static", "images"))
 	if err != nil {
 		log.Fatal(err)
 	}
-	images := []string{}
-	darkimages := []string{}
-	for _, d := range dir {
-		// fmt.Println(dir)
-		if !d.IsDir() {
-			i, err := d.Info()
-			if err != nil {
-				log.Fatal(err)
-			}
-			images = append(images, i.Name())
-		}
-	}
-	darkdir, err := os.ReadDir(filepath.Join("static", "images", "dark"))
+	darkimages, err := findFiles(filepath.Join("static", "images", "dark"))
 	if err != nil {
 		log.Fatal(err)
-	}
-	for _, d := range darkdir {
-		// fmt.Println(dir)
-		if !d.IsDir() {
-			i, err := d.Info()
-			if err != nil {
-				log.Fatal(err)
-			}
-			darkimages = append(darkimages, i.Name())
-		}
 	}
 	sort.Strings(images)
 	// sort.Sort(sort.Reverse(sort.StringSlice(darkimages)))
@@ -77,4 +58,22 @@ func main() {
 		fmt.Println("[WARN] no dark variant found for", image)
 	}
 
+}
+
+func findFiles(directory string) ([]string, error) {
+	files := []string{}
+	direntries, err := os.ReadDir(directory)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, d := range direntries {
+		if !d.IsDir() {
+			i, err := d.Info()
+			if err != nil {
+				return nil, err
+			}
+			files = append(files, i.Name())
+		}
+	}
+	return files, nil
 }

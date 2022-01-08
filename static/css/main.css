@@ -6,6 +6,10 @@ body {
     color: #222;
 }
 
+h1.title {
+    font-size: 250%;
+}
+
 footer {
     margin: 2rem auto;
     font-size: small;

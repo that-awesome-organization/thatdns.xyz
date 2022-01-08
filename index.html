@@ -6,47 +6,85 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>That DNS</title>
-    <link href="/static/css/main.css?ts=1641634820" rel="stylesheet">
+    <link href="/static/css/main.css?ts=1641663959" rel="stylesheet">
     <script defer data-domain="thatdns.xyz" src="https://t.dcpri.me/js/plausible.js"></script>
-    <script src="/static/js/main.js?ts=1641634820"></script>
+    <script src="/static/js/main.js?ts=1641663959"></script>
 </head>
 
 <body>
     <div class="content">
-        <h1>That DNS</h1>
+        <h1 class="title">That DNS</h1>
         <nav>
             <ul>
                 <li><a href="/">Project Details</a></li>
-                <li><a href="/progress.html">Progress</a></li>
+                <li><a href="/plugin.html">GeoDNS Plugin</a></li>
                 <li><a href="/demo.html">Demo</a></li>
             </ul>
         </nav>
-        <h2>Introduction</h2>
+        <h1>Project Details</h1>
+<ol>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#purpose">Purpose</a></li>
+    <li><a href="#how-it-works">How it works?</a></li>
+</ol>
 
-<p>The basic idea of this project is to create a Name Server that responds to the queries from
-Global DNS servers like Cloudflare (1.1.1.1) or Google (8.8.8.8) with respecting the geography
-of the IP Address it is requested from.</p>
+<h2 id="introduction">Introduction</h2>
 
-<p>It does look difficult from the perspective of normal website user, but if you think about it from a
-engineering perspective it is quite simple.</p>
+<p>
+    The basic idea of this project (or a PoC) is to create a Name Server that responds to the queries from
+    Global DNS servers like Cloudflare (1.1.1.1) or Google (8.8.8.8) with respecting the geography
+    of the IP Address it is requested from.
+</p>
 
-<p>The main purpose of this project is to have a Name server that sits in-between DNS and records.
+<p>
+    It does look difficult from the perspective of normal website user, but if you think about it from a
+    engineering perspective it is quite simple.
+</p>
+
+<h2 id="purpose">Purpose</h2>
+<p>
+    The main purpose of this project is to have a Name server that sits in-between DNS and records.
     Based on the location it will resolve A/AAAA records closest to the Client IP that requested the record.
-
+</p>
+<p>
     e.g. if client is in India and the website they visit is resolving to multiple IPs around the globe
     thatdns service will respond with only nearest ones.
 </p>
 
-<h2>How it works?</h2>
-<h3>DNS Infrastructure overview</h3>
-<img data-src="/static/images/dns-infrastructure.png" src="" onerror="loadImage(this);">
+<h2 id="how-it-works">How it works?</h2>
 
-<p>From the figure above we can see the DNS Providers have servers
-    distributed around the globe and to access any Domain the first
-    step is to get the NS record (not shown in the diagram) for the domain.
+<p>
+    The server is running CoreDNS service that responds to all the queries from DNS Servers.
+    Following are the plugins that are going to be used.
 </p>
 
-<img data-src="/static/images/sequence-1.png" src="" onerror="loadImage(this);">
+<ul>
+    <li>file: File plugin allows serving records from a File.</li>
+    <li>geoip: Allows to set metadata about the Client IP.</li>
+    <li>geodns: Allows resolving the record and if it has more than one A record, check closest one.</li>
+</ul>
+
+<h3>File Plugin</h3>
+<p>
+    The simple file has records which needs records to be served. More details about it are
+    available in <a href="https://coredns.io/plugins/file/">Core DNS Plugin file</a>
+</p>
+
+<h3>GeoIP Plugin</h3>
+<p>
+    The GeoIP plugin allows adding a metadata about the Client Address, like Country, City, etc.
+    More details about it are available in
+    <a href="https://coredns.io/plugins/geoip/">Core DNS Plugin geoip</a>
+</p>
+
+<h3>GeoDNS Plugin (In progress)</h3>
+<p>
+    This plugin is in development, it actually does the magic.
+    It is a middleware which filters the IPs which are nearby to the Client IP.
+    Code repository is available at <a href="https://git.dcpri.me/that-organization/geodns">GeoDNS Git Repository</a>.
+</p>
+<a href="/more-details.html">More details...</a>
+
 
     </div>
     <footer>
