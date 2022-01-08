@@ -16,7 +16,7 @@ var (
 func main() {
 	// create html files
 	for _, tmpl := range tmpls {
-		fmt.Printf("Processing template %-20s", tmpl)
+		fmt.Printf("[INFO] Processing template %-20s", tmpl)
 		t := template.Must(template.New("_base.html").ParseFiles(filepath.Join("templates", "_base.html"), filepath.Join("templates", tmpl)))
 		f, err := os.Create(tmpl)
 		if err != nil {
