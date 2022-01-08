@@ -8,3 +8,4 @@ Install `pre-commit` script and hope `go` command is already installed.
 ./hooks/install.sh
 go run main.go
 ```
+
