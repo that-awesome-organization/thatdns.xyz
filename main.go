@@ -14,15 +14,21 @@ var (
 )
 
 func main() {
+	// create html files
 	for _, tmpl := range tmpls {
+		fmt.Printf("Processing template %-20s", tmpl)
 		t := template.Must(template.New("_base.html").ParseFiles(filepath.Join("templates", "_base.html"), filepath.Join("templates", tmpl)))
 		f, err := os.Create(tmpl)
 		if err != nil {
 			log.Fatal(err)
 		}
-		t.Execute(f, nil)
+		if err := t.Execute(f, nil); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("[DONE]")
 	}
 
+	// check for images that are not in dark mode
 	dir, err := os.ReadDir(filepath.Join("static", "images"))
 	if err != nil {
 		log.Fatal(err)
