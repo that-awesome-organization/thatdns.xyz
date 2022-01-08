@@ -4,7 +4,7 @@ htmlstatus=`git status --short | grep templates | wc -l`
 staticstatus=`git status --short | grep /static/ | wc -l`
 
 if [[ "$staticstatus" -gt 0 ]]; then
-    echo "Found changes in static files
+    echo "[INFO] Found changes in static files"
     date +%s > .timestamp
     git add .timestamp
 fi
