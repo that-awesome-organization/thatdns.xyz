@@ -1,7 +1,15 @@
 #!/bin/bash
 
-status=`git status --short | grep templates | wc -l`
-if [[ "$status" -gt 0 ]]; then
+htmlstatus=`git status --short | grep templates | wc -l`
+staticstatus=`git status --short | grep /static/ | wc -l`
+
+if [[ "$staticstatus" -gt 0 ]]; then
+    echo "Found changes in static files
+    date +%s > .timestamp
+    git add .timestamp
+fi
+
+if [[ "$htmlstatus" -gt 0 ]]; then
     go run main.go
     git add *.html
 fi

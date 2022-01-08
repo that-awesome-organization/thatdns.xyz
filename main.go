@@ -14,6 +14,11 @@ var (
 )
 
 func main() {
+	timestampBytes, err := os.ReadFile(".timestamp")
+	if err != nil {
+		timestampBytes = []byte{}
+	}
+	timestamp := string(timestampBytes[:len(timestampBytes)-1])
 	// create html files
 	for _, tmpl := range tmpls {
 		fmt.Printf("[INFO] Processing template %-20s", tmpl)
@@ -22,7 +27,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		if err := t.Execute(f, nil); err != nil {
+		if err := t.Execute(f, struct{ Timestamp string }{Timestamp: timestamp}); err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println("[DONE]")

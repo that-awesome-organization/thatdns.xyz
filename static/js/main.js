@@ -8,4 +8,5 @@ function loadImage(element) {
     } else {
         element.src = element.dataset.src;
     }
+    element.onclick = () => window.open(element.src);
 }
