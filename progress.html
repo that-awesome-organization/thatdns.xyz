@@ -8,19 +8,7 @@
     <title>That DNS</title>
     <link href="/static/css/main.css" rel="stylesheet">
     <script defer data-domain="thatdns.xyz" src="https://t.dcpri.me/js/plausible.js"></script>
-    <script>
-        function loadImage(element) {
-            if (window.matchMedia &&
-                window.matchMedia('(prefers-color-scheme: dark)').matches &&
-                (element.dataset.darked === undefined || element.dataset.darked == 0)) {
-                element.src = element.dataset.src.replace("/static/images/", "/static/images/dark/");
-                element.dataset.darked = 1;
-            } else {
-                element.src = element.dataset.src;
-            }
-        }
-
-    </script>
+    <script src="/static/js/main.js"></script>
 </head>
 
 <body>
