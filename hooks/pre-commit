@@ -1,7 +1,7 @@
 #!/bin/bash
 
 htmlstatus=`git status --short | grep templates | wc -l`
-staticstatus=`git status --short | grep static/ | wc -l`
+staticstatus=`git status --short | grep static/ | grep -v images | wc -l`
 
 if [[ "$staticstatus" -gt 0 ]]; then
     echo "[INFO] Found changes in static files"
